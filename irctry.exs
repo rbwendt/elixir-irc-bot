@@ -1,10 +1,6 @@
 defmodule IRCTry do
-  use GenServer
 
   @initial_state %{socket: nil}
-  def start_link do
-    GenServer.start_link(__MODULE__, @initial_state)
-  end
 
   def init(state, host, port, nick, channel, handler) do
     opts = [:list, active: false]
