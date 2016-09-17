@@ -30,8 +30,10 @@ defmodule IRCTry do
       say(socket, Enum.concat('PONG :', Enum.slice(msg, 6, Enum.count(msg) - 6)))
     else
       reply = f.(msg)
-      if Enum.count(reply) > 0 do
-        say_to_chan(socket, channel, reply)
+      case reply do
+        {:ok, msg} ->
+          say_to_chan(socket, channel, msg)
+        _ ->
       end
     end
     read(socket, channel, f)
@@ -41,9 +43,7 @@ end
 handler = fn (msg) ->
   smsg = String.Chars.to_string(msg)
   if String.contains?(smsg, "hi bot") do
-    'Hi back!'
-  else
-    ''
+    {:ok, 'Hi back!'}
   end
 end
 IRCTry.init(%{socket: nil}, 'irc.freenode.net', 6667, 'IrcBot70101', 'fun_channel', handler)
