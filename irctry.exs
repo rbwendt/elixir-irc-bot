@@ -34,6 +34,7 @@ defmodule IRCTry do
         {:ok, msg} ->
           say_to_chan(socket, channel, msg)
         _ ->
+          nil
       end
     end
     read(socket, channel, f)
