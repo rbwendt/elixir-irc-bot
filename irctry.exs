@@ -26,7 +26,7 @@ defmodule IRCTry do
     {:ok, msg} = :gen_tcp.recv(socket, 0)
     IO.puts msg
     case msg do
-      [?P, ?I, ?N, ?G, ?\s, ?: | host] ->
+      'PING :' ++ host ->
         say(socket, 'PONG :' ++ host)
       _ ->
         reply = f.(msg)
