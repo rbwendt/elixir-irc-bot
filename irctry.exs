@@ -25,17 +25,17 @@ defmodule IRCTry do
   defp read(socket, channel, f) do
     {:ok, msg} = :gen_tcp.recv(socket, 0)
     IO.puts msg
-
-    if Enum.take(msg, 6) == 'PING :' do
-      say(socket, Enum.concat('PONG :', Enum.slice(msg, 6, Enum.count(msg) - 6)))
-    else
-      reply = f.(msg)
-      case reply do
-        {:ok, msg} ->
-          say_to_chan(socket, channel, msg)
-        _ ->
-          nil
-      end
+    case msg do
+      [?P, ?I, ?N, ?G, ? , ?: | host] ->
+        say(socket, 'PONG :' ++ host)
+      _ ->
+        reply = f.(msg)
+        case reply do
+          {:ok, msg} ->
+            say_to_chan(socket, channel, msg)
+          _ ->
+            nil
+        end
     end
     read(socket, channel, f)
   end
